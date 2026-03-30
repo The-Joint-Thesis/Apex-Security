@@ -8,7 +8,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 56px; }
   --surface:   #1a1c1a;
   --border:    #242624;
   --border2:   #2e302e;
-  --text:      #e2ddd6;
+  --text:      #ffffff;
   --muted:     #ffffff;
   --faint:     #ffffff;
   --amber:     #c8a050;
@@ -22,7 +22,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Figtree', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -67,7 +67,7 @@ em { font-style: italic; color: var(--amber); }
 
 .nav-brand {
   font-family: 'Playfair Display', serif;
-  font-size: .95rem;
+  font-size: 1.5rem;
   color: var(--text);
   transition: color .2s;
   flex-shrink: 0;
@@ -80,7 +80,7 @@ em { font-style: italic; color: var(--amber); }
   gap: 0;
 }
 .nav-links a {
-  font-size: .78rem;
+  font-size: 1rem;
   color: var(--muted);
   padding: 5px 10px;
   border-radius: 4px;
@@ -135,7 +135,7 @@ em { font-style: italic; color: var(--amber); }
 
 .label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: .62rem;
+  font-size: 1rem;
   letter-spacing: .1em;
   color: var(--amber);
   display: block;
@@ -242,7 +242,7 @@ em { font-style: italic; color: var(--amber); }
 .hero-content { padding: 64px 0; }
 .hero-eye {
   font-family: 'JetBrains Mono', monospace;
-  font-size: .62rem;
+  font-size: 1rem;
   color: var(--muted);
   letter-spacing: .08em;
   margin-bottom: 22px;
@@ -252,7 +252,7 @@ em { font-style: italic; color: var(--amber); }
   margin-bottom: 20px;
 }
 .hero-desc {
-  font-size: .95rem;
+  font-size: 1.2rem;
   color: var(--muted);
   max-width: 440px;
   line-height: 1.7;
