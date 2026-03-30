@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Architecture — Apex Security</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/s9g6chXV/github-1051377.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Figtree:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">Apex Security</a>
+    <div class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#specs">Specs</a>
+      <a href="documentation.html" class="active">Documentation</a>
+      <a href="partners.html">Partners</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <button class="nav-toggle" id="tog"><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob" id="mob">
+  <a href="index.html">Overview</a>
+  <a href="documentation.html">Documentation</a>
+  <a href="partners.html">Partners</a>
+</div>
+
+<!-- PAGE HEAD -->
+<header class="circ-head">
+  <div class="circ-head-inner">
+    <div>
+      <p class="crumb"><a href="index.html">Home</a> <span>/</span> <a href="documentation.html">Documentation</a> <span>/</span> System Architecture</p>
+      <h1>System <em>Architecture</em></h1>
+      <p>Full-stack block diagram — sensor layer, ESP32 edge processing, wireless uplink, cloud ingestion, supervisor dashboard, and the multi-modal alert pipeline.</p>
+    </div>
+    <div class="circ-meta">
+      <div class="cm-row"><span>Document</span><span>DOC-03</span></div>
+      <div class="cm-row"><span>Layers</span><span>4 (Sensor → Cloud)</span></div>
+      <div class="cm-row"><span>Protocols</span><span>I2C · WiFi · MQTT · BLE</span></div>
+      <div class="cm-row"><span>Status</span><span class="cm-live">Available</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<div class="wrap" style="padding-top:0;padding-bottom:0;">
+  <div class="fw-layout reveal">
+
+    <nav class="fw-sidebar">
+      <div class="fw-sidebar-title">SECTIONS</div>
+      <button class="fw-nav-item active" onclick="fwShow('overview',this)">
+        <span class="fw-nav-num">01</span>
+        <span class="fw-nav-label">Overview</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('sensor',this)">
+        <span class="fw-nav-num">02</span>
+        <span class="fw-nav-label">Sensor Layer</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('edge',this)">
+        <span class="fw-nav-num">03</span>
+        <span class="fw-nav-label">Edge Processing</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('wireless',this)">
+        <span class="fw-nav-num">04</span>
+        <span class="fw-nav-label">Wireless Uplink</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('cloud',this)">
+        <span class="fw-nav-num">05</span>
+        <span class="fw-nav-label">Cloud & Dashboard</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('alert',this)">
+        <span class="fw-nav-num">06</span>
+        <span class="fw-nav-label">Alert Pipeline</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('lora',this)">
+        <span class="fw-nav-num">07</span>
+        <span class="fw-nav-label">LoRaWAN Extension</span>
+      </button>
+    </nav>
+
+    <div class="fw-content">
+
+      <div class="fw-section active" id="fw-overview">
+        <h2>System Overview</h2>
+        <p>The Apex Security system is a four-layer IoT stack: a physical sensing layer embedded in the jacket, an edge processing layer on the ESP32, a wireless uplink layer (WiFi/BLE/LoRa), and a cloud layer with a supervisor dashboard. Each layer has well-defined interfaces and fail-safes to ensure local safety functions remain fully operational even without network connectivity.</p>
+        <div class="fw-block">
+          <h4>Design Principle: Local-First Safety</h4>
+          <p>All critical alerts — fall detection, E-field proximity, vital sign anomalies — fire locally (buzzer, haptic, LED) within 22 ms of detection. Network transmission is a secondary reporting channel and its failure never suppresses a physical alert.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Four Layers</h4>
+          <p><strong style="color:var(--text)">Layer 1 — Sensing:</strong> MPU6050, MAX30102, MLX90614, IR, LDR, E-field probe.<br>
+          <strong style="color:var(--text)">Layer 2 — Edge (ESP32):</strong> Sensor fusion, FSM, alert output, BLE GATT server.<br>
+          <strong style="color:var(--text)">Layer 3 — Wireless:</strong> WiFi + MQTT to broker, BLE to wrist cuff, optional LoRaWAN to gateway.<br>
+          <strong style="color:var(--text)">Layer 4 — Cloud:</strong> MQTT broker, time-series DB, supervisor dashboard, SMS/push alerts.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-sensor">
+        <h2>Layer 1 — Sensor Layer</h2>
+        <p>Five sensing subsystems feed into the ESP32 via I2C and GPIO. The sensor layer is physically distributed across the jacket: IMU at the back collar, PPG sensor at the wrist cuff, IR thermometer at the chest collar, IR proximity at the sleeve, and the E-field antenna at the shoulder.</p>
+        <table class="thresh-table">
+          <thead><tr><th>Sensor</th><th>Interface</th><th>Location</th><th>Sample Rate</th><th>Data</th></tr></thead>
+          <tbody>
+            <tr><td>MPU6050</td><td><span class="chip">I2C 0x68</span></td><td>Back collar</td><td>100 Hz</td><td>Accel XYZ, Gyro XYZ</td></tr>
+            <tr><td>MAX30102</td><td><span class="chip">I2C 0x57</span></td><td>Wrist cuff</td><td>25 Hz</td><td>IR / Red PPG waveforms</td></tr>
+            <tr><td>MLX90614</td><td><span class="chip">I2C 0x5A</span></td><td>Chest collar</td><td>10 Hz</td><td>Skin temp, ambient temp</td></tr>
+            <tr><td>IR Proximity</td><td><span class="chip">GPIO 34</span></td><td>Sleeve edge</td><td>20 Hz</td><td>Digital presence signal</td></tr>
+            <tr><td>LDR</td><td><span class="chip">ADC GPIO35</span></td><td>Shoulder</td><td>20 Hz</td><td>12-bit light level</td></tr>
+            <tr><td>E-Field Probe</td><td><span class="chip">ADC via CA3140</span></td><td>Shoulder</td><td>50 Hz</td><td>Amplified displacement</td></tr>
+          </tbody>
+        </table>
+        <div class="fw-block" style="margin-top:16px;">
+          <h4>I2C Bus Topology</h4>
+          <p>All three I2C sensors share SDA (GPIO 21) and SCL (GPIO 22) with 4.7 kΩ pull-ups. Unique addresses eliminate bus contention. Flexible ribbon cables route through jacket seams with reinforced stress-relief at shoulder and cuff junctions.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-edge">
+        <h2>Layer 2 — Edge Processing</h2>
+        <p>The ESP32-WROOM-32 performs all safety-critical decisions locally, with a sensor fusion pipeline that runs on Core 0 at deterministic intervals. The edge layer is intentionally designed to be self-sufficient — no cloud dependency for any alert function.</p>
+        <div class="fw-block">
+          <h4>Sensor Fusion Pipeline</h4>
+          <p>Raw sensor samples are placed into typed FreeRTOS queues. The alertTask reads from these queues and runs: (1) SVM calculation for fall detection, (2) threshold comparison for vital signs, (3) ADC voltage comparison for E-field level. All three evaluations happen within a single 10 ms tick loop.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Alert Output Hierarchy</h4>
+          <p>Three hardware outputs are driven directly from GPIO: buzzer (GPIO 26, PWM tone), haptic motor (GPIO 27, PWM strength), and status LED RGB (GPIO 12/13/14). A three-level severity system (INFO / WARNING / CRITICAL) maps to distinct patterns for each output channel.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Decision Latency</h4>
+          <p>From sensor read to GPIO alert output: 22 ms typical at 10% system load, up to 57 ms at 100% load. WiFi transmission adds an additional 180 ms average over a stable LAN connection. Local alerts always fire before wireless transmission begins.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-wireless">
+        <h2>Layer 3 — Wireless Uplink</h2>
+        <p>Three radio technologies are used in complementary roles. WiFi handles high-bandwidth cloud sync, BLE handles low-latency wrist-cuff pairing, and LoRaWAN (optional module) handles long-range transmission in sites without WiFi infrastructure.</p>
+        <div class="fw-block">
+          <h4>WiFi (802.11n / 2.4 GHz)</h4>
+          <p>Connects to site WiFi AP. Used for MQTT broker communication, OTA firmware updates, and periodic health data sync. Transmission is event-driven to minimize radio-on time. Not suitable as the sole uplink in substations due to metallic shielding — LoRa is preferred in such environments.</p>
+        </div>
+        <div class="fw-block">
+          <h4>BLE 5.0 (GATT Profile)</h4>
+          <p>Pairs with wrist cuff (a secondary ESP32 BLE peripheral) and optionally with a supervisor's smartphone. Notifies heart rate, SpO₂, and alert events at 500 ms intervals when a client is subscribed. Range: ~10 m typical in industrial environment.</p>
+        </div>
+        <div class="fw-block">
+          <h4>LoRaWAN SX1278 (Optional)</h4>
+          <p>Slot for optional LoRa module on SPI bus. Targets large sites (substations, solar farms, construction zones) where WiFi is unavailable. Range: 5–15 km open field. Transmit power: 20 dBm. Data rate: 250–5500 bps (SF7–SF12). Low duty cycle (1%) ensures compliance with regional radio regulations.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-cloud">
+        <h2>Layer 4 — Cloud &amp; Dashboard</h2>
+        <p>The cloud layer provides persistent storage, fleet monitoring, and supervisor alerting. The reference architecture uses Mosquitto MQTT broker → InfluxDB time-series database → Grafana dashboard, all deployable on a single VPS or on-premise server.</p>
+        <div class="fw-block">
+          <h4>Data Pipeline</h4>
+          <p>MQTT broker receives all jacket publishes. A Node.js bridge subscribes to all <code style="font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--amber)">apex/#</code> topics and writes to InfluxDB with device ID, timestamp, and measurement tags. Grafana queries InfluxDB for real-time and historical dashboards.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Supervisor Alerts</h4>
+          <p>A Node-RED or custom webhook handler monitors <code style="font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--amber)">apex/+/alert</code> topics and dispatches SMS (Twilio), push notification (FCM), or email alerts to supervisors within 2 s of the event timestamp. Alert payloads include device ID, event type, GPS coordinates if available, and sensor values at time of event.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Retention &amp; Privacy</h4>
+          <p>Health data is stored with configurable retention (default: 90 days). Device IDs are pseudonymous — mapping to workers is controlled by the site operator. All MQTT connections use TLS 1.2. InfluxDB access is restricted to the local network or VPN.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-alert">
+        <h2>Alert Pipeline</h2>
+        <p>Alert events flow from sensor detection through local output and then to wireless notification in a defined sequence. The pipeline is designed so that each stage can operate independently — local alerts never wait for network confirmation.</p>
+        <div class="fw-block">
+          <h4>Stage 1 — Detection (0 ms)</h4>
+          <p>alertTask detects threshold breach or FSM transition. Sets corresponding bit in xAlertEventGroup.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Stage 2 — Local Output (&lt; 22 ms)</h4>
+          <p>GPIO outputs activate: buzzer tone pattern, haptic motor vibration, LED color/flash rate. Worker receives immediate tactile and auditory feedback.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Stage 3 — BLE Notify (&lt; 50 ms)</h4>
+          <p>commTask reads event bit and pushes BLE notification to connected wrist cuff and smartphone. Wrist cuff mirrors local alert pattern.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Stage 4 — MQTT Publish (&lt; 250 ms)</h4>
+          <p>MQTT alert message published to broker. If WiFi is unavailable, message is queued in RAM (max 10 events) and flushed on reconnection.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Stage 5 — Supervisor Notification (&lt; 2 s)</h4>
+          <p>Cloud webhook triggers SMS/push/email to supervisor. Grafana alert panel marks the event on the timeline. Supervisor can acknowledge via dashboard to silence repeat notifications.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-lora">
+        <h2>LoRaWAN Extension</h2>
+        <p>For deployment sites without reliable WiFi — electrical substations, remote transmission lines, underground cable tunnels, large construction sites — LoRaWAN replaces WiFi as the primary uplink. WiFi is then used only for local diagnostics and OTA updates when the jacket is in the maintenance zone.</p>
+        <div class="fw-block">
+          <h4>Gateway Architecture</h4>
+          <p>A RAK7268 or similar LoRaWAN gateway is installed at the site control room. All jackets register as end-devices. The gateway forwards packets to a TTN (The Things Network) or ChirpStack network server, which routes to the same MQTT broker used for WiFi devices — the cloud layer is protocol-agnostic.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Packet Structure</h4>
+          <p>LoRa payloads are binary-encoded to fit within the duty-cycle budget. A 12-byte health packet carries: device ID (2 B), heart rate (1 B), SpO₂ (1 B), skin temp × 10 (2 B), alert flags bitmask (1 B), battery % (1 B), sequence number (2 B), CRC (2 B).</p>
+        </div>
+        <div class="fw-block">
+          <h4>Why LoRa for Substations</h4>
+          <p>High-voltage yards generate intense electromagnetic interference that degrades 2.4 GHz WiFi reliability. LoRa's 433/868/915 MHz bands are less affected by metallic enclosures and EMI. Additionally, LoRa's star topology with a single gateway simplifies infrastructure deployment in sites where running Ethernet is impractical.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="footer" style="margin-top:0">
+  <div class="footer-inner">
+    <div class="footer-bar">
+      <span>Apex Security · 2026</span>
+      <span>© <span id="yr"></span> All rights reserved.</span>
+      <nav>
+        <a href="documentation.html">← All Docs</a>
+        <a href="firmware.html">Firmware Reference</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+function fwShow(id, btn) {
+  document.querySelectorAll('.fw-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.fw-nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('fw-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

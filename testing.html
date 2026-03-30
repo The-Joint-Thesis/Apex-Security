@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testing & Calibration — Apex Security</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/s9g6chXV/github-1051377.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Figtree:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">Apex Security</a>
+    <div class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#specs">Specs</a>
+      <a href="documentation.html" class="active">Documentation</a>
+      <a href="partners.html">Partners</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <button class="nav-toggle" id="tog"><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob" id="mob">
+  <a href="index.html">Overview</a>
+  <a href="documentation.html">Documentation</a>
+  <a href="partners.html">Partners</a>
+</div>
+
+<header class="circ-head">
+  <div class="circ-head-inner">
+    <div>
+      <p class="crumb"><a href="index.html">Home</a> <span>/</span> <a href="documentation.html">Documentation</a> <span>/</span> Testing & Calibration</p>
+      <h1>Testing &amp; <em>Calibration</em></h1>
+      <p>Sensor calibration procedures, factory test checklist, alert threshold tuning, and field validation results from simulated performance evaluations.</p>
+    </div>
+    <div class="circ-meta">
+      <div class="cm-row"><span>Document</span><span>DOC-05</span></div>
+      <div class="cm-row"><span>Topics</span><span>Calibration · Validation · Metrics</span></div>
+      <div class="cm-row"><span>Status</span><span style="color:#ffa726;">Prototype in Progress</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" style="padding-top:40px;padding-bottom:80px;">
+  <div class="status-page reveal">
+    <div class="status-icon">⚗️</div>
+    <h2>Prototype Creation<br><em>in the Process</em></h2>
+    <p>Physical prototyping is currently underway. Testing procedures, calibration data, and field validation results will be documented here once the prototype build is complete.</p>
+    <span class="status-tag">DOC-05 · TESTING & CALIBRATION · PROTOTYPE PHASE</span>
+  </div>
+
+  <!-- Preview of planned metrics -->
+  <div style="max-width:680px;margin:0 auto;margin-top:48px;" class="reveal">
+    <div style="padding:18px 24px;background:var(--surface);border:1px solid var(--border);border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-family:'Figtree',sans-serif;font-size:.85rem;font-weight:500;color:var(--text);">Planned Performance Targets</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--faint);letter-spacing:.08em;">SIMULATED · SUBJECT TO REVISION</span>
+    </div>
+    <table class="thresh-table" style="border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;">
+      <thead>
+        <tr><th>Parameter</th><th>Target Value</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Fall Detection Accuracy</td><td>≥ 96 %</td><td>50 simulated fall events</td></tr>
+        <tr><td>False Positive Rate</td><td>≤ 4 %</td><td>Running, jumping, bending</td></tr>
+        <tr><td>HV Detection Distance (230V AC)</td><td>≥ 35 cm</td><td>Standard sensitivity</td></tr>
+        <tr><td>HV Detection Distance (415V AC)</td><td>≥ 50 cm</td><td>Higher field intensity</td></tr>
+        <tr><td>SpO₂ Accuracy</td><td>±2 %</td><td>vs. medical-grade oximeter</td></tr>
+        <tr><td>Heart Rate Error</td><td>±3 BPM</td><td>Low–moderate motion</td></tr>
+        <tr><td>Temperature Accuracy</td><td>±0.2 °C</td><td>MLX90614 vs reference</td></tr>
+        <tr><td>Sensor Fusion Latency</td><td>≤ 25 ms</td><td>Read → alert decision</td></tr>
+        <tr><td>WiFi Alert Transmission</td><td>≤ 200 ms</td><td>ESP32 to monitoring device</td></tr>
+        <tr><td>Battery Runtime (normal)</td><td>72 h</td><td>3000 mAh, mixed duty cycle</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<footer class="footer" style="margin-top:0">
+  <div class="footer-inner">
+    <div class="footer-bar">
+      <span>Apex Security · 2026</span>
+      <span>© <span id="yr"></span> All rights reserved.</span>
+      <nav>
+        <a href="documentation.html">← All Docs</a>
+        <a href="assembly.html">Assembly Guide</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

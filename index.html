@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Security - Smart Safety Jacket</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/s9g6chXV/github-1051377.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Figtree:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">Apex Security</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#specs">Specs</a>
+      <a href="documentation.html">Documentation</a>
+      <a href="partners.html">Partners</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="nav-toggle" id="tog"><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob" id="mob">
+  <a href="#features">Features</a>
+  <a href="#specs">Specs</a>
+  <a href="documentation.html">Documentation</a>
+  <a href="partners.html">Partners</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-eye">Wearable IoT Safety System · 2026</p>
+    <h1 class="hero-title">Smart Safety<br><em>Jacket</em></h1>
+    <p class="hero-desc">Wearable technology combining IoT sensors, health monitoring, and real-time hazard detection to protect workers in dangerous environments.</p>
+    <div class="hero-btns">
+      <a href="#features" class="btn btn-solid">Explore Features</a>
+      <a href="documentation.html" class="btn btn-outline">Documentation</a>
+      <a href="partners.html" class="btn btn-outlined">Partners</a> </div>
+  </div>
+  <div class="hero-aside">
+    <div class="h-stat">
+      <div class="h-stat-num"><span data-target="95">95</span><sup>%</sup></div>
+      <p>Accident<br>Prevention</p>
+    </div>
+    <div class="h-stat">
+      <div class="h-stat-num"><span data-target="72">0</span><sup style="font-size:.75rem">h</sup></div>
+      <p>Battery<br>Life</p>
+    </div>
+    <script src="script.js"></script>
+    <div class="h-stat">
+      <div class="h-stat-num"><span data-target="2.5">2.5</span><sup>s</sup></div>
+      <p>Response<br>Time</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery">
+  <figure class="g-img">
+    <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=700&q=80" alt="Sensor design">
+    <figcaption>Intelligent Design</figcaption>
+  </figure>
+  <figure class="g-img g-img--tall">
+    <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=700&q=80" alt="Monitoring">
+    <figcaption>Real-time Monitoring</figcaption>
+  </figure>
+  <figure class="g-img">
+    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=700&q=80" alt="Industrial grade">
+    <figcaption>Industrial Grade</figcaption>
+  </figure>
+</section>
+
+<!-- FEATURES -->
+<section class="sec" id="features">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="label">Core Features</span>
+      <h2>Built to protect, designed to <em>last.</em></h2>
+      <p>Comprehensive protection through intelligent monitoring systems for the modern industrial workforce.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat reveal">
+        <span class="feat-n">01</span>
+        <h3>Electric Field Detection</h3>
+        <p>Custom probes detect live conductors up to 5 m away, preventing electrical accidents before contact.</p>
+        <span class="feat-tag">EF Sensor · GPIO ADC</span>
+      </div>
+      <div class="feat reveal">
+        <span class="feat-n">02</span>
+        <h3>Thermal Monitoring</h3>
+        <p>MLX90614 IR sensors scan for hot surfaces and overheating equipment at 10 Hz continuously.</p>
+        <span class="feat-tag">MLX90614 · I2C · 0x5A</span>
+      </div>
+      <div class="feat reveal">
+        <span class="feat-n">03</span>
+        <h3>Vital Signs Tracking</h3>
+        <p>Heart rate and SpO₂ via MAX30102. Alerts fire if values leave safe thresholds.</p>
+        <span class="feat-tag">MAX30102 · I2C · 0x57</span>
+      </div>
+      <div class="feat reveal">
+        <span class="feat-n">04</span>
+        <h3>Fall Detection</h3>
+        <p>MPU6050 detects free-fall and impact, dispatching SOS after a 15-second confirmation window.</p>
+        <span class="feat-tag">MPU6050 · I2C · 0x68</span>
+      </div>
+      <div class="feat reveal">
+        <span class="feat-n">05</span>
+        <h3>Multi-Modal Alerts</h3>
+        <p>Haptic, buzzer, and LED channels fire across three priority levels simultaneously.</p>
+        <span class="feat-tag">Haptic · Buzzer · LED</span>
+      </div>
+      <div class="feat reveal">
+        <span class="feat-n">06</span>
+        <h3>IoT Connectivity</h3>
+        <p>BLE 5.0 for wrist-cuff telemetry and 802.11n WiFi for cloud dashboard sync via MQTT.</p>
+        <span class="feat-tag">ESP32-S3 · BLE · WiFi</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section class="sec sec--tint" id="specs">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="label">Hardware</span>
+      <h2>Technical <em>Specifications</em></h2>
+    </div>
+    <div class="specs-layout">
+      <div class="specs-table-wrap reveal">
+        <table class="specs-table">
+          <thead>
+            <tr><th>Component</th><th>Part</th><th>Interface</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Processor</td><td class="part">ESP32-S3</td><td><span class="chip">Core MCU</span></td><td>Dual-core LX7, BLE + WiFi</td></tr>
+            <tr><td>Thermal</td><td class="part">MLX90614</td><td><span class="chip">I2C · 0x5A</span></td><td>HW-691 breakout</td></tr>
+            <tr><td>Pulse Oximeter</td><td class="part">MAX30102</td><td><span class="chip">I2C · 0x57</span></td><td>SpO₂ + Heart Rate</td></tr>
+            <tr><td>IMU</td><td class="part">MPU6050</td><td><span class="chip">I2C · 0x68</span></td><td>6-axis motion</td></tr>
+            <tr><td>Proximity</td><td class="part">IR Module</td><td><span class="chip">Digital · GPIO34</span></td><td>FC-51 / TCRT5000</td></tr>
+            <tr><td>Light</td><td class="part">LDR</td><td><span class="chip">ADC · GPIO35</span></td><td>10 kΩ divider</td></tr>
+            <tr><td>Battery</td><td class="part">18650 Li-ion</td><td><span class="chip">3.7V</span></td><td>72h continuous</td></tr>
+            <tr><td>Charging</td><td class="part">USB-B</td><td><span class="chip">5V / 2A</span></td><td>Programming + charge</td></tr>
+            <tr><td>Op. Temp.</td><td class="part">−40° to 85°C</td><td><span class="chip">Ambient</span></td><td>Industrial, IP44</td></tr>
+            <tr><td>Alert Output</td><td class="part">Haptic + LED</td><td><span class="chip">GPIO PWM</span></td><td>3-channel</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="specs-aside reveal">
+        <div class="aside-block">
+          <h4>I2C Bus</h4>
+          <p>SDA GPIO 21, SCL GPIO 22. Three I2C sensors share the bus. 4.7 kΩ pull-ups required on both lines.</p>
+        </div>
+        <div class="aside-block">
+          <h4>Power Note</h4>
+          <p>MAX30102 draws LED burst currents. A 10 µF bulk cap near its VCC pin is mandatory.</p>
+        </div>
+        <div class="aside-block">
+          <h4>Circuit Reference</h4>
+          <p>Visual wiring diagrams for all sensors in the documentation.</p>
+          <a href="circuit-diagram.html" class="aside-link">View Circuits →</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" id="contact">
+  <div class="footer-inner">
+    <div class="footer-names reveal">
+      <span>Get in touch</span>
+      <a href="/cdn-cgi/l/email-protection#4d3f2c392c232928283d2624232a242c2b2e0d2a202c2421632e2220">Ratandeep Choudhary</a>
+      <a href="/cdn-cgi/l/email-protection#176473727227272657676578637879397a72">Shreyash Dwivedi</a>
+    </div>
+    <div class="footer-bar">
+      <span>Apex Security · 2026</span>
+      <span>© <span id="yr"></span> All rights reserved.</span>
+      <nav>
+        <a href="documentation.html">Documentation</a>
+        <a href="circuit-diagram.html">Circuit Diagrams</a>
+    

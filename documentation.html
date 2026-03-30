@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation — Apex Security</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/s9g6chXV/github-1051377.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Figtree:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">Apex Security</a>
+    <div class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#specs">Specs</a>
+      <a href="documentation.html" class="active">Documentation</a>
+      <a href="partners.html">Partners</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <button class="nav-toggle" id="tog"><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob" id="mob">
+  <a href="index.html">Overview</a>
+  <a href="index.html#features">Features</a>
+  <a href="index.html#specs">Specs</a>
+  <a href="partners.html">Partners</a>
+  <a href="index.html#contact">Contact</a>
+</div>
+
+<!-- PAGE HEAD -->
+<div class="doc-page-head">
+  <div class="wrap">
+    <p class="crumb"><a href="index.html">Home</a> <span>/</span> Documentation</p>
+    <div style="max-width:560px">
+      <span class="label">Documentation</span>
+      <h1 style="font-size:clamp(2rem,5vw,3.2rem);margin-bottom:12px;">Everything you need<br>to build this <em>system.</em></h1>
+      <p style="color:var(--muted);font-size:.88rem;font-weight:300;line-height:1.7;">Complete reference for the Apex Smart Safety Jacket — from circuit-level wiring to firmware architecture, assembly, and testing.</p>
+    </div>
+  </div>
+</div>
+
+<!-- DOC LIST -->
+<div class="wrap" style="padding-top:40px;padding-bottom:80px;">
+
+  <div class="doc-list reveal">
+
+    <a href="circuit-diagram.html" class="doc-row doc-row--live">
+      <span class="dr-num">01</span>
+      <div class="dr-body">
+        <h3>Circuit Diagrams</h3>
+        <p>Visual wiring reference for all five ESP32 sensor connections — component values, bus topology, pull-up resistors, and decoupling capacitors.</p>
+        <div class="dr-tags">
+          <span class="chip">MPU6050</span>
+          <span class="chip">MAX30102</span>
+          <span class="chip">MLX90614</span>
+          <span class="chip">IR Sensor</span>
+          <span class="chip">LDR</span>
+        </div>
+      </div>
+      <div class="dr-right">
+        <span class="dr-status dr-status--live">Available</span>
+        <span class="dr-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="firmware.html" class="doc-row doc-row--live">
+      <span class="dr-num">02</span>
+      <div class="dr-body">
+        <h3>Firmware Reference</h3>
+        <p>ESP32-S3 firmware architecture, sensor polling loops, MQTT telemetry, alert state machine, and FreeRTOS task breakdown.</p>
+        <div class="dr-tags">
+          <span class="chip">Sensor Drivers</span>
+          <span class="chip">Alert FSM</span>
+          <span class="chip">MQTT Client</span>
+          <span class="chip">BLE GATT</span>
+        </div>
+      </div>
+      <div class="dr-right">
+        <span class="dr-status dr-status--live">Available</span>
+        <span class="dr-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="system-architecture.html" class="doc-row doc-row--live">
+      <span class="dr-num">03</span>
+      <div class="dr-body">
+        <h3>System Architecture</h3>
+        <p>Block diagram covering the sensor layer, edge processing, wireless uplink, cloud dashboard, and supervisor alert pipeline.</p>
+        <div class="dr-tags">
+          <span class="chip">Block Diagram</span>
+          <span class="chip">Data Flow</span>
+          <span class="chip">Cloud Integration</span>
+        </div>
+      </div>
+      <div class="dr-right">
+        <span class="dr-status dr-status--live">Available</span>
+        <span class="dr-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="assembly.html" class="doc-row doc-row--live">
+      <span class="dr-num">04</span>
+      <div class="dr-body">
+        <h3>Assembly Guide</h3>
+        <p>Step-by-step physical assembly: PCB layout, sensor placement on the jacket, cable routing, enclosure sealing, and battery installation.</p>
+        <div class="dr-tags">
+          <span class="chip">PCB Layout</span>
+          <span class="chip">Sensor Placement</span>
+          <span class="chip">Cable Management</span>
+        </div>
+      </div>
+      <div class="dr-right">
+        <span class="dr-status dr-status--soon">In the Making</span>
+        <span class="dr-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="testing.html" class="doc-row doc-row--live">
+      <span class="dr-num">05</span>
+      <div class="dr-body">
+        <h3>Testing &amp; Calibration</h3>
+        <p>Sensor calibration procedures, factory test checklist, alert threshold tuning, and field validation results.</p>
+        <div class="dr-tags">
+          <span class="chip">Calibration</span>
+          <span class="chip">Test Checklist</span>
+          <span class="chip">Field Results</span>
+        </div>
+      </div>
+      <div class="dr-right">
+        <span class="dr-status dr-status--soon">In Progress</span>
+        <span class="dr-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer" style="margin-top:0">
+  <div class="footer-inner">
+    <div class="footer-bar">
+      <span>Apex Security · 2026</span>
+      <span>© <span id="yr"></span> All rights reserved.</span>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="circuit-diagram.html">Circuit Diagrams</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

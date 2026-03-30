@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firmware Reference — Apex Security</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/s9g6chXV/github-1051377.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Figtree:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">Apex Security</a>
+    <div class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#specs">Specs</a>
+      <a href="documentation.html" class="active">Documentation</a>
+      <a href="partners.html">Partners</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <button class="nav-toggle" id="tog"><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob" id="mob">
+  <a href="index.html">Overview</a>
+  <a href="documentation.html">Documentation</a>
+  <a href="partners.html">Partners</a>
+</div>
+
+<!-- PAGE HEAD -->
+<header class="circ-head">
+  <div class="circ-head-inner">
+    <div>
+      <p class="crumb"><a href="index.html">Home</a> <span>/</span> <a href="documentation.html">Documentation</a> <span>/</span> Firmware Reference</p>
+      <h1>Firmware <em>Reference</em></h1>
+      <p>ESP32 firmware architecture, sensor drivers, alert state machine, FreeRTOS task structure, and MQTT/BLE telemetry pipeline for the Apex Security jacket.</p>
+    </div>
+    <div class="circ-meta">
+      <div class="cm-row"><span>Document</span><span>DOC-02</span></div>
+      <div class="cm-row"><span>MCU</span><span>ESP32-WROOM-32</span></div>
+      <div class="cm-row"><span>Framework</span><span>Arduino / FreeRTOS</span></div>
+      <div class="cm-row"><span>Protocol</span><span>MQTT · BLE GATT</span></div>
+      <div class="cm-row"><span>Status</span><span class="cm-live">Available</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<div class="wrap" style="padding-top:0;padding-bottom:0;">
+  <div class="fw-layout reveal">
+
+    <!-- Sidebar -->
+    <nav class="fw-sidebar">
+      <div class="fw-sidebar-title">SECTIONS</div>
+      <button class="fw-nav-item active" onclick="fwShow('overview',this)">
+        <span class="fw-nav-num">01</span>
+        <span class="fw-nav-label">Overview</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('tasks',this)">
+        <span class="fw-nav-num">02</span>
+        <span class="fw-nav-label">FreeRTOS Tasks</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('sensors',this)">
+        <span class="fw-nav-num">03</span>
+        <span class="fw-nav-label">Sensor Drivers</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('fall',this)">
+        <span class="fw-nav-num">04</span>
+        <span class="fw-nav-label">Fall Detection FSM</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('vitals',this)">
+        <span class="fw-nav-num">05</span>
+        <span class="fw-nav-label">Vital Sign Alerts</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('mqtt',this)">
+        <span class="fw-nav-num">06</span>
+        <span class="fw-nav-label">MQTT Telemetry</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('ble',this)">
+        <span class="fw-nav-num">07</span>
+        <span class="fw-nav-label">BLE GATT</span>
+      </button>
+      <button class="fw-nav-item" onclick="fwShow('power',this)">
+        <span class="fw-nav-num">08</span>
+        <span class="fw-nav-label">Power Management</span>
+      </button>
+    </nav>
+
+    <!-- Content panels -->
+    <div class="fw-content">
+
+      <div class="fw-section active" id="fw-overview">
+        <h2>Firmware Overview</h2>
+        <p>The Apex Security firmware runs on the ESP32-WROOM-32 using the Arduino framework on top of FreeRTOS. Two cores are used deliberately: Core 0 handles time-critical sensor sampling and the alert finite state machine, while Core 1 manages WiFi, MQTT publishing, and BLE GATT notifications. This separation ensures that a slow network operation never delays a fall or E-field alert.</p>
+        <div class="fw-block">
+          <h4>Core Assignment</h4>
+          <p>Core 0 — Sensor polling (MPU6050 @ 100 Hz, MAX30102 @ 25 Hz, MLX90614 @ 10 Hz, LDR/IR @ 20 Hz), fall detection algorithm, alert FSM, haptic + buzzer output.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Core 1</h4>
+          <p>Core 1 — WiFi stack, MQTT client (PubSubClient), BLE GATT server, OTA update handler, heartbeat watchdog.</p>
+        </div>
+        <div class="fw-code">
+<span class="cm">// Main task pinning</span><br>
+xTaskCreatePinnedToCore(sensorTask, <span class="str">"Sensors"</span>, <span class="kw">8192</span>, NULL, <span class="kw">2</span>, &amp;sensorHandle, <span class="kw">0</span>);<br>
+xTaskCreatePinnedToCore(alertTask,  <span class="str">"Alert"</span>,   <span class="kw">4096</span>, NULL, <span class="kw">3</span>, &amp;alertHandle,  <span class="kw">0</span>);<br>
+xTaskCreatePinnedToCore(commTask,   <span class="str">"Comms"</span>,   <span class="kw">8192</span>, NULL, <span class="kw">1</span>, &amp;commHandle,   <span class="kw">1</span>);
+        </div>
+        <div class="fw-block">
+          <h4>Inter-task Communication</h4>
+          <p>FreeRTOS queues pass sensor readings from sensorTask to alertTask. A shared event group (xEventGroupCreate) signals alert conditions to commTask for immediate wireless transmission.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-tasks">
+        <h2>FreeRTOS Task Breakdown</h2>
+        <p>All tasks are statically allocated. Priority levels are assigned to ensure sensor acquisition is never pre-empted by communication tasks during a safety-critical window.</p>
+        <table class="thresh-table">
+          <thead><tr><th>Task Name</th><th>Core</th><th>Priority</th><th>Stack</th><th>Responsibility</th></tr></thead>
+          <tbody>
+            <tr><td>sensorTask</td><td><span class="chip">Core 0</span></td><td>2</td><td>8 KB</td><td>I2C polling, ADC reads, circular buffer fill</td></tr>
+            <tr><td>alertTask</td><td><span class="chip">Core 0</span></td><td>3</td><td>4 KB</td><td>Fall FSM, threshold checks, GPIO alert outputs</td></tr>
+            <tr><td>commTask</td><td><span class="chip">Core 1</span></td><td>1</td><td>8 KB</td><td>MQTT publish, BLE notify, WiFi reconnect</td></tr>
+            <tr><td>otaTask</td><td><span class="chip">Core 1</span></td><td>1</td><td>4 KB</td><td>OTA update listener (idle loop)</td></tr>
+            <tr><td>watchdogTask</td><td><span class="chip">Core 1</span></td><td>2</td><td>2 KB</td><td>Hardware watchdog reset every 30 s</td></tr>
+          </tbody>
+        </table>
+        <div class="fw-block" style="margin-top:16px;">
+          <h4>Queues & Semaphores</h4>
+          <p>xSensorQueue (depth 10) passes SensorPacket structs from sensorTask → alertTask. xI2CSemaphore (binary) guards shared I2C bus access. xAlertEventGroup notifies commTask of urgent events using bit flags (BIT0 = fall, BIT1 = EField, BIT2 = vitals).</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-sensors">
+        <h2>Sensor Drivers</h2>
+        <p>Each sensor has a dedicated driver module. All I2C drivers share the Wire instance guarded by xI2CSemaphore to prevent bus collisions during concurrent reads.</p>
+        <div class="fw-block">
+          <h4>MPU6050 — Motion &amp; Fall</h4>
+          <p>Library: <code style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--amber)">Adafruit_MPU6050</code>. Configured at ±8g / ±500°/s range. Interrupt pin (GPIO 23) wakes the ESP32 from light sleep on sudden movement. Raw accelerometer XYZ values are fed into the SVM computation at 100 Hz.</p>
+        </div>
+        <div class="fw-block">
+          <h4>MAX30102 — Heart Rate &amp; SpO₂</h4>
+          <p>Library: <code style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--amber)">SparkFun MAX3010x</code>. Runs in HR+SpO₂ multi-LED mode. A 25-sample circular buffer feeds a peak-detection algorithm. Readings are averaged over 4 s windows to reduce motion artifact noise.</p>
+        </div>
+        <div class="fw-block">
+          <h4>MLX90614 — Infrared Temperature</h4>
+          <p>Library: <code style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--amber)">Adafruit_MLX90614</code>. Polled at 10 Hz. Both object temperature (skin) and ambient temperature are read each cycle. The delta (T_skin − T_ambient) is used for heat-stress scoring alongside absolute skin temperature.</p>
+        </div>
+        <div class="fw-block">
+          <h4>IR Proximity &amp; LDR</h4>
+          <p>IR module (FC-51) on GPIO 34 — digital read, active LOW when object detected. LDR on GPIO 35 — 12-bit ADC reading, averaged over 8 samples per cycle. Both are read in the same 20 Hz polling loop.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-fall">
+        <h2>Fall Detection FSM</h2>
+        <p>The multi-stage fall detection algorithm uses a finite state machine with five states. Each transition requires specific sensor conditions to be met within defined time windows, preventing false positives from ordinary industrial movements.</p>
+        <div class="fw-code">
+<span class="cm">// Signal Vector Magnitude</span><br>
+<span class="kw">float</span> <span class="fn">calcSVM</span>(<span class="kw">float</span> ax, <span class="kw">float</span> ay, <span class="kw">float</span> az) {<br>
+&nbsp;&nbsp;<span class="kw">return</span> sqrt(ax*ax + ay*ay + az*az);<br>
+}<br><br>
+<span class="cm">// FSM states</span><br>
+<span class="kw">enum</span> FallState { IDLE, FREE_FALL, IMPACT, ORIENTATION, INACTIVITY, ALERT };
+        </div>
+        <table class="thresh-table">
+          <thead><tr><th>State</th><th>Condition</th><th>Threshold</th><th>Timeout</th></tr></thead>
+          <tbody>
+            <tr><td>IDLE → FREE_FALL</td><td>SVM drops below threshold</td><td>&lt; 0.5 g</td><td>—</td></tr>
+            <tr><td>FREE_FALL → IMPACT</td><td>SVM spike after free fall</td><td>&gt; 3.0 g</td><td>1.5 s window</td></tr>
+            <tr><td>IMPACT → ORIENTATION</td><td>Check orientation vector angle</td><td>&gt; 60° from vertical</td><td>500 ms</td></tr>
+            <tr><td>ORIENTATION → INACTIVITY</td><td>Low gyroscope angular velocity</td><td>&lt; 15°/s</td><td>10 s hold</td></tr>
+            <tr><td>INACTIVITY → ALERT</td><td>No recovery motion detected</td><td>—</td><td>15 s total</td></tr>
+          </tbody>
+        </table>
+        <div class="fw-block" style="margin-top:16px;">
+          <h4>False Positive Suppression</h4>
+          <p>A running-average filter on SVM rejects short transients. If the IMPACT phase is not followed by orientation shift within 500 ms, the FSM resets to IDLE. Sitting-down and tool-drop events rarely produce SVM &gt; 3 g sustained for the required window.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-vitals">
+        <h2>Vital Sign Alert Logic</h2>
+        <p>Physiological thresholds are based on industrial health guidelines. Alerts only fire if the anomalous reading persists beyond a confirmation window to avoid single-sample noise triggering false alarms.</p>
+        <table class="thresh-table">
+          <thead><tr><th>Parameter</th><th>Alert Condition</th><th>Threshold</th><th>Confirmation Window</th><th>Priority</th></tr></thead>
+          <tbody>
+            <tr><td>SpO₂</td><td>Possible respiratory distress</td><td>&lt; 90 %</td><td>10 s</td><td><span class="chip" style="color:#ff5252;border-color:rgba(255,82,82,.2)">HIGH</span></td></tr>
+            <tr><td>Heart Rate</td><td>Overexertion / shock response</td><td>&gt; 120 BPM</td><td>15 s</td><td><span class="chip" style="color:#ffa726;border-color:rgba(255,167,38,.2)">MED</span></td></tr>
+            <tr><td>Heart Rate</td><td>Bradycardia / unconsciousness</td><td>&lt; 45 BPM</td><td>10 s</td><td><span class="chip" style="color:#ff5252;border-color:rgba(255,82,82,.2)">HIGH</span></td></tr>
+            <tr><td>Skin Temp</td><td>Heat stress warning</td><td>&gt; 39 °C</td><td>20 s</td><td><span class="chip" style="color:#ffa726;border-color:rgba(255,167,38,.2)">MED</span></td></tr>
+            <tr><td>Skin Temp</td><td>Heat stroke risk</td><td>&gt; 41 °C</td><td>5 s</td><td><span class="chip" style="color:#ff5252;border-color:rgba(255,82,82,.2)">HIGH</span></td></tr>
+          </tbody>
+        </table>
+        <div class="fw-block" style="margin-top:16px;">
+          <h4>Multi-Modal Alert Output</h4>
+          <p>HIGH priority: buzzer (continuous 2 kHz), haptic motor (continuous), LED (red rapid flash), MQTT alert published immediately. MED priority: buzzer (3 short pulses), haptic (2 pulses), LED (amber slow flash), MQTT published on next 5 s tick.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-mqtt">
+        <h2>MQTT Telemetry</h2>
+        <p>The ESP32 connects to a WiFi network and publishes sensor data to an MQTT broker (Mosquitto or cloud-hosted). Two topic hierarchies are used: periodic health data (every 10 s) and immediate alert events (on detection).</p>
+        <div class="fw-code">
+<span class="cm">// MQTT topics</span><br>
+<span class="str">"apex/&lt;device_id&gt;/health"</span>  <span class="cm">// periodic: HR, SpO2, temp, lux</span><br>
+<span class="str">"apex/&lt;device_id&gt;/alert"</span>   <span class="cm">// immediate: fall, efield, vitals</span><br>
+<span class="str">"apex/&lt;device_id&gt;/status"</span>  <span class="cm">// heartbeat: battery %, uptime</span>
+        </div>
+        <div class="fw-block">
+          <h4>Payload Format (JSON)</h4>
+          <p>All payloads are compact JSON strings. Health payload includes: <code style="font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--amber)">{"hr":72,"spo2":98,"temp":36.8,"lux":412,"ts":1709123456}</code>. Alert payload includes: <code style="font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--amber)">{"type":"fall","svm_peak":4.2,"ts":1709123490}</code>.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Reconnect Strategy</h4>
+          <p>If WiFi or MQTT connection drops, commTask enters an exponential back-off retry loop (2 s → 4 s → 8 s → max 30 s). During disconnection, alerts are stored in a 10-entry RAM queue and flushed on reconnection. Local alerts (buzzer/haptic) always fire regardless of connectivity.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-ble">
+        <h2>BLE GATT Profile</h2>
+        <p>The ESP32's built-in BLE stack exposes a custom GATT service for wrist-cuff pairing and real-time data streaming to a companion mobile application. BLE operates concurrently with WiFi on the ESP32's shared radio using time-division multiplexing.</p>
+        <div class="fw-block">
+          <h4>Service &amp; Characteristic UUIDs</h4>
+          <p>Service: <code style="font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--amber)">0x1800</code> (Apex Safety Service). Characteristics: Heart Rate Measurement <code style="font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--amber)">0x2A37</code>, SpO₂ Level <code style="font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--amber)">0x2A5F</code>, Temperature <code style="font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--amber)">0x2A1C</code>, Alert Level <code style="font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--amber)">0x2A06</code>.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Notifications</h4>
+          <p>Health characteristics notify every 2 s when a client is subscribed. Alert Level characteristic notifies immediately on any alert event. The wrist cuff (a secondary ESP32 BLE peripheral) subscribes to Alert Level and mirrors buzzer/haptic output locally on the wrist.</p>
+        </div>
+      </div>
+
+      <div class="fw-section" id="fw-power">
+        <h2>Power Management</h2>
+        <p>Firmware power management balances continuous sensor vigilance against battery longevity using ESP32's light sleep and deep sleep modes alongside sensor-level power gating.</p>
+        <div class="fw-block">
+          <h4>Light Sleep (Idle)</h4>
+          <p>When no motion is detected for 30 s and no active alert exists, the ESP32 enters light sleep (~0.8 mA). The MPU6050 interrupt (GPIO 23) acts as a wake source. I2C and UART remain capable of wake-up. Resume latency is &lt; 1 ms.</p>
+        </div>
+        <div class="fw-block">
+          <h4>Deep Sleep (Long Idle)</h4>
+          <p>After 5 minutes of inactivity with no active WiFi connection, the ESP32 enters deep sleep (~10 µA). A ULP co-processor continues basic motion monitoring. Wake sources: ULP threshold trigger, or external RTC timer every 60 s for a MQTT heartbeat ping.</p>
+        </div>
+        <table class="thresh-table" style="margin-top:16px;">
+          <thead><tr><th>Mode</th><th>Current</th><th>Wake Source</th></tr></thead>
+          <tbody>
+            <tr><td>Active (WiFi TX)</td><td>~180 mA</td><td>—</td></tr>
+            <tr><td>Active (Sensor idle)</td><td>~50 mA</td><td>—</td></tr>
+            <tr><td>Light Sleep</td><td>~0.8 mA</td><td>GPIO interrupt (MPU6050)</td></tr>
+            <tr><td>Deep Sleep</td><td>~10 µA</td><td>ULP motion / RTC timer</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="footer" style="margin-top:0">
+  <div class="footer-inner">
+    <div class="footer-bar">
+      <span>Apex Security · 2026</span>
+      <span>© <span id="yr"></span> All rights reserved.</span>
+      <nav>
+        <a href="documentation.html">← All Docs</a>
+        <a href="system-architecture.html">System Architecture →</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+function fwShow(id, btn) {
+  document.querySelectorAll('.fw-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.fw-nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('fw-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
