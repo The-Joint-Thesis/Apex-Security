@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research Paper — Apex Security</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/s9g6chXV/github-1051377.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Figtree:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+ 
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">Apex Security</a>
+    <div class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#specs">Specs</a>
+      <a href="documentation.html">Documentation</a>
+      <a href="partners.html">Partners</a>
+      <a href="research.html" class="active">Research</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <button class="nav-toggle" id="tog"><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob" id="mob">
+  <a href="index.html">Overview</a>
+  <a href="index.html#features">Features</a>
+  <a href="documentation.html">Documentation</a>
+  <a href="partners.html">Partners</a>
+  <a href="research.html">Research</a>
+  <a href="index.html#contact">Contact</a>
+</div>
+
+<!-- HEAD -->
+<div class="rp-head">
+  <div class="rp-head-inner">
+    <p class="crumb"><a href="index.html">Home</a> <span>/</span> Research</p>
+
+    <div class="rp-journal-row">
+      <span class="rp-badge">Published</span>
+      <span class="rp-journal-name">International Journal of Sciences and Innovation Engineering · Vol. 3, Issue 4 · April 2026</span>
+    </div>
+
+    <h1 class="rp-title">
+      Apex Security: A Predictive IoT Wearable System with Multi-Physics Hazard Modelling for Electrical Utility Worker Safety
+    </h1>
+
+    <div class="rp-authors">
+      <span class="rp-author">Ratandeep Choudhary<sup>1</sup></span>
+      <div class="rp-sep"></div>
+      <span class="rp-author">Shreyash Dwivedi<sup>2</sup></span>
+      <div class="rp-sep"></div>
+      <span class="rp-affil">CSVTU · Dept. of Electrical Engineering · UPU Govt. Polytechnic, Durg, C.G.</span>
+    </div>
+
+    <div class="rp-meta">
+      <div class="rp-meta-cell">
+        <span class="rp-meta-label">DOI</span>
+        <span class="rp-meta-value hi">10.70849/ijsci</span>
+      </div>
+      <div class="rp-meta-cell">
+        <span class="rp-meta-label">E-ISSN</span>
+        <span class="rp-meta-value">3049-0251</span>
+      </div>
+      <div class="rp-meta-cell">
+        <span class="rp-meta-label">Published</span>
+        <span class="rp-meta-value">13 April 2026</span>
+      </div>
+      <div class="rp-meta-cell">
+        <span class="rp-meta-label">Pages</span>
+        <span class="rp-meta-value">1298–1309</span>
+      </div>
+      <div class="rp-meta-cell">
+        <span class="rp-meta-label">License</span>
+        <span class="rp-meta-value hi">CC BY 4.0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="rp-body">
+
+  <main class="rp-main">
+
+    <!-- Abstract -->
+    <div class="rp-abstract">
+      <span class="rp-block-label">Abstract</span>
+      <p>Traditional personal protective equipment in electrical utility environments remains fundamentally reactive, mitigating physical harm only after hazardous exposure occurs. This paper presents Apex Security, a next-generation IoT-enabled smart jacket that transitions industrial safety from passive protection to predictive prevention through real-time multi-physics hazard modeling, sensor fusion, and cumulative exposure dosimetry.</p>
+      <p>The system integrates seven sensing modalities within a flame-retardant garment: a high-impedance non-contact electric field sensor (ADA4530-1-based) with lock-in amplification for 50/60 Hz discrimination, MPU6050 inertial measurement unit for kinematic monitoring, MAX30102 photoplethysmography sensor for cardiac and SpO₂ measurement, and MLX90614 infrared thermometry for core body temperature estimation. All sensors interface with an ESP32-S3 microcontroller executing an Extended Kalman Filter for sensor fusion and a Random Forest classifier for hazard prediction.</p>
+      <p>Unlike existing wearables that merely report instantaneous measurements, Apex Security introduces three novel capabilities: (1) predictive hazard detection using machine learning to identify precursor patterns 5–10 seconds before incidents, (2) cumulative electric field dosimetry tracking long-term exposure against IEEE C95.1-2019 occupational limits, and (3) multi-channel communication (LoRaWAN + Wi-Fi) enabling reliable data transmission in metallic substation environments where conventional wireless fails. Laboratory validation demonstrates 96.8% fall detection sensitivity, 42 cm detection range for 11 kV conductors, and a 73% reduction in false alerts compared to commercial systems.</p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="rp-kw-block">
+      <span class="rp-block-label">Keywords</span>
+      <div class="rp-kw-list">
+        <span class="rp-kw">Predictive Safety</span>
+        <span class="rp-kw">IoT Wearables</span>
+        <span class="rp-kw">Electric Field Dosimetry</span>
+        <span class="rp-kw">Multi-Physics Modeling</span>
+        <span class="rp-kw">Sensor Fusion</span>
+        <span class="rp-kw">LoRaWAN</span>
+        <span class="rp-kw">Industrial PPE</span>
+        <span class="rp-kw">Hazard Prediction</span>
+        <span class="rp-kw">NFPA 70E</span>
+        <span class="rp-kw">IEEE C95.1</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Sidebar -->
+  <aside class="rp-sidebar">
+
+    <div class="rp-card">
+      <div class="rp-card-head">Publication</div>
+      <div class="rp-card-body">
+        <span class="rp-doi-value">https://doi.org/10.70849/ijsci</span>
+        <p class="rp-open-access">Open Access · CC BY 4.0</p>
+        <a href="https://ijsci.com/paper-details.php/27604729/" target="_blank" class="aside-link">View on IJSCI →</a>
+      </div>
+    </div>
+
+    <div class="rp-card">
+      <div class="rp-card-head">Details</div>
+      <div class="rp-card-body">
+        <div class="rp-detail-row">
+          <span class="rp-detail-label">Journal</span>
+          <span class="rp-detail-value">Int. Journal of Sciences and Innovation Engineering</span>
+        </div>
+        <div class="rp-detail-row">
+          <span class="rp-detail-label">Volume / Issue</span>
+          <span class="rp-detail-value">Vol. 3, Issue 4, April 2026</span>
+        </div>
+        <div class="rp-detail-row">
+          <span class="rp-detail-label">Pages</span>
+          <span class="rp-detail-value">1298–1309</span>
+        </div>
+        <div class="rp-detail-row">
+          <span class="rp-detail-label">Corresponding Author</span>
+          <span class="rp-detail-value">Ratandeep Choudhary</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rp-card">
+      <div class="rp-card-head">Cite This Paper</div>
+      <div class="rp-card-body">
+        <p class="rp-cite-text">Ratandeep Choudhary , “Apex Security: A Predictive IoT Wearable System with Multi-Physics Hazard Modelling for Electrical Utility Worker Safety”, Int. J. Sci. Inno. Eng. pp. 1298-1309, 2026-04-13 doi: .</p>
+        <button class="rp-cite-btn" id="citeBtn">Copy Citation</button>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<footer class="footer" style="margin-top:0">
+  <div class="footer-inner">
+    <div class="footer-bar">
+      <span>Apex Security · 2026</span>
+      <span>© <span id="yr"></span> All rights reserved.</span>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="documentation.html">Documentation</a>
+        <a href="partners.html">Partners</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+  document.getElementById('citeBtn').addEventListener('click', function() {
+    navigator.clipboard.writeText('Choudhary, R., & Dwivedi, S. (2026). Apex Security: A Predictive IoT Wearable System with Multi-Physics Hazard Modelling for Electrical Utility Worker Safety. IJSCI, 3(4), 1298–1309. https://doi.org/10.70849/ijsci');
+    this.textContent = 'Copied ✓';
+    setTimeout(() => this.textContent = 'Copy Citation', 2200);
+  });
+</script>
+</body>
+</html>
